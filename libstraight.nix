@@ -74,12 +74,13 @@ let
 
       mkdir -p $out
       ${(install "${straightDir}/repos" packages)}
-      emacs -q      \
+      emacs -q \
             --batch \
             --directory=${epkgs.straight}/share/emacs/site-lisp \
             --load=${./setup.el} \
             ${concatMapStringsSep "\n" (f: "--load=${f}") emacsLoadFiles} \
-            --eval="(nix-straight-build-packages \"${emacsInitFile}\")" ${escapeShellArgs emacsArgs}
+            --eval="(nix-straight-build-packages \"${emacsInitFile}\")" ${escapeShellArgs emacsArgs} \
+            || (cat $out/logs/cli.doom.*.error && false) # print a proper stacktrace if things fail
 
       runHook postInstall
     '';
