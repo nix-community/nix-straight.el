@@ -80,7 +80,7 @@ let
             --load=${./setup.el} \
             ${concatMapStringsSep "\n" (f: "--load=${f}") emacsLoadFiles} \
             --eval="(nix-straight-build-packages \"${emacsInitFile}\")" ${escapeShellArgs emacsArgs} \
-            || (cat $out/logs/cli.doom.*.error && false) # print a proper stacktrace if things fail
+            || (cat $out/logs/cli.doom.*.error 1>&2 && false) # print a proper stacktrace if things fail
 
       runHook postInstall
     '';
