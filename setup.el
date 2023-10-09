@@ -1,6 +1,9 @@
 ;;; -*- lexical-binding: t; -*-
 (require 'json)
 
+(unless (boundp 'native-comp-deferred-compilation-deny-list)
+  (defvaralias 'native-comp-deferred-compilation-deny-list 'native-comp-jit-compilation-deny-list))
+
 (defun nix-straight-get-used-packages (init-file output-file)
   (let ((nix-straight--packages nil))
     (advice-add 'straight-use-package
